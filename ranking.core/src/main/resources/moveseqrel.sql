@@ -1,0 +1,3 @@
+CREATE TABLE SEQUENCESRELCOPY SELECT * FROM SEQUENCESREL Where 0=1;
+INSERT INTO SEQUENCESRELCOPY SELECT a.* FROM SEQUENCESREL a JOIN SEQUENCESRELCOPY b ON a.idrelsequence = b.parent where b.parent <> 0;
+INSERT INTO SEQUENCESRELCOPY SELECT c.* FROM SEQUENCESRELCOPY b LEFT JOIN SEQUENCESRELCOPY a on a.idrelsequence = b.parent JOIN SEQUENCESREL c on c.idrelsequence = b.parent where b.parent <> 0 and a.idrelsequence is null; 

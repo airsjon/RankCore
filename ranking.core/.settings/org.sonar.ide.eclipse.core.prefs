@@ -1,0 +1,6 @@
+eclipse.preferences.version=1
+extraProperties=sonar.exclusions\=**/tiff/common/ui/**,**/au/com/bytecode/**\r\nsonar.java.source\=1.8
+lastAnalysisDate=1425710808094
+projectKey=com.airsltd.aga\:ranking.core
+serverUrl=http\://192.168.0.35\:9000
+version=2
