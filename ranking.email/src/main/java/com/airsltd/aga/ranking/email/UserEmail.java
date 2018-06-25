@@ -38,12 +38,7 @@ import com.airsltd.core.data.CoreInterface;
  * this Function reads all the users that need an email sent to them and
  * sends it.
  * 
- * This application also performs the following tests:
- * <ul><li>Verification expired? delete account</li>
- * <li>Password Reset expired? clear password reset</li>
- * </ul>
- * 
- * @author Jon
+ * @author Jon Boley
  *
  */
 public class UserEmail extends AirsJavaDatabaseApp {
@@ -62,9 +57,9 @@ public class UserEmail extends AirsJavaDatabaseApp {
 
 	private String f_host = "email-smtp.us-east-1.amazonaws.com";
 
-	private String f_user = "AKIAIJ67UT2UBCHD2KZQ";
+	private String f_user;
 
-	private String f_password = "Ao9Nh89ZtCt+uFBHMoa76DauZaJCLNm7b2JDDyK4AALf";
+	private String f_password;
 
 	private PreparedStatement f_statement;
 
@@ -74,11 +69,16 @@ public class UserEmail extends AirsJavaDatabaseApp {
 		int l_retVal = 0;
 		UserEmail l_app = new UserEmail();
 		try {
-			l_app.initializeDatabase(RankConnection.getInstance());
-    		if (p_args.length==1) {
-    			l_app.setWorkDir(p_args[0]);
-    		}
-			l_app.sendEmails();
+			if (switchExists(p_args, "-switch", "-s")) {
+				l_app.setupPassword();
+			} else {
+				l_app.loadUser();
+				l_app.initializeDatabase(RankConnection.getInstance());
+	    		if (p_args.length==1) {
+	    			l_app.setWorkDir(p_args[0]);
+	    		}
+				l_app.sendEmails();
+			}
 		} catch (Throwable e) {
 			f_logger.error("Unexpected Error", e);
 			l_retVal = 1;
