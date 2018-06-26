@@ -32,7 +32,8 @@ public class GameStateUpdate extends AirsJavaDatabaseApp {
 
 	private static final Log LOGGER = LogFactory.getLog(GameStateUpdate.class);
 	
-	public GameStateUpdate() {
+	public GameStateUpdate(String[] p_args) {
+		super(p_args);
 	}
 
 	/**
@@ -41,9 +42,9 @@ public class GameStateUpdate extends AirsJavaDatabaseApp {
 	 */
 	public static void main(String[] p_args) throws ParseException {
 		
-		GameStateUpdate l_gameState = new GameStateUpdate();
+		GameStateUpdate l_gameState = new GameStateUpdate(p_args);
 		ISqlConnection l_connection = RankConnection.getInstance();
-		boolean l_reset = switchExists(p_args, "--reset", "-r");
+		boolean l_reset = l_gameState.switchExists(p_args, "--reset", "-r");
 		try {
 			l_gameState.initializeDatabase(l_connection);
 			if (!l_reset) {

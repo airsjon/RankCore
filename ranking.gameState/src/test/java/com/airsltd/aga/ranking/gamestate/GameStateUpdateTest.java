@@ -42,7 +42,7 @@ public class GameStateUpdateTest extends ConnectionSetup {
 	public void testProcessGameStatesReset() throws SQLException {
 		// given
 		// when
-		new GameStateUpdate().processGameStates(DATESTRING, true);
+		new GameStateUpdate(new String[] {}).processGameStates(DATESTRING, true);
 		// then
 		verify(m_connection).prepareStatement("UPDATE `games` SET State=2 WHERE State=3");
 	}
@@ -51,7 +51,7 @@ public class GameStateUpdateTest extends ConnectionSetup {
 	public void testProcessGameStates() throws SQLException {
 		// given
 		// when
-		new GameStateUpdate().processGameStates(DATESTRING, false);
+		new GameStateUpdate(new String[] {}).processGameStates(DATESTRING, false);
 		// then
 		
 	}

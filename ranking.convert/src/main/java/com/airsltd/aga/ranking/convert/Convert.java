@@ -35,8 +35,6 @@ import com.airsltd.aga.ranking.core.model.TournamentModel;
 import com.airsltd.aga.ranking.core.states.GameResult;
 import com.airsltd.core.NotificationStatus;
 import com.airsltd.core.collections.AirsCollections;
-import com.airsltd.core.collections.BooleanFunction;
-import com.airsltd.core.data.AirsConnectionException;
 import com.airsltd.core.data.AirsJavaDatabaseApp;
 import com.airsltd.core.data.CoreInterface;
 import com.airsltd.core.data.ISqlConnection;
@@ -45,7 +43,6 @@ import com.airsltd.core.math.Counter;
 import com.airsltd.core.model.ListModel;
 import com.airsltd.core.model.PersistentIdSegmentedListModel;
 import com.airsltd.core.model.SegmentedListModel;
-import com.mysql.cj.xdevapi.AbstractDataResult;
 
 /**
  * @author Jon Boley
@@ -70,7 +67,21 @@ public class Convert extends AirsJavaDatabaseApp {
 	private List<RankPlayer> f_players = new ArrayList<RankPlayer>();
 	private static final Log LOGGER = LogFactory.getLog(Convert.class);
 	
-	public Convert(Date p_date) {
+	public Convert(String[] p_args) {
+		super(p_args);
+	}
+
+	/**
+	 * @return the date
+	 */
+	public Date getDate() {
+		return f_date;
+	}
+
+	/**
+	 * @param p_date the date to set
+	 */
+	public void setDate(Date p_date) {
 		f_date = p_date;
 	}
 
@@ -80,11 +91,12 @@ public class Convert extends AirsJavaDatabaseApp {
 	 */
 	public static void main(String[] p_args) throws ParseException {
 		
-		setIncremental(switchExists(p_args, "--incremental", "-i"));
-		Date l_date = BlockConverters.DATECONVERTER.fromSql(null, getArgData(p_args, "--until=", "-u"));
-		String l_argData = getArgData(p_args, "--since=", "-s");
+		Convert l_convert = new Convert(p_args);
+		setIncremental(l_convert.switchExists(p_args, "--incremental", "-i"));
+		Date l_date = BlockConverters.DATECONVERTER.fromSql(null, l_convert.getArgData(p_args, "--until=", "-u"));
+		String l_argData = l_convert.getArgData(p_args, "--since=", "-s");
 		Date l_preDate = l_argData == null?null:BlockConverters.DATECONVERTER.fromSql(null, l_argData);
-		Convert l_convert = new Convert(l_date);
+		l_convert.setDate(l_date);
 		ISqlConnection l_connection = RankConnection.getInstance();
 		try {
 			l_convert.initializeDatabase(l_connection);

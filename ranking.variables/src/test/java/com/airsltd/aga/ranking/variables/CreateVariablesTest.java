@@ -66,7 +66,7 @@ public class CreateVariablesTest extends ConnectionSetupTest {
 		f_gameTwo = new RankGame(33,0,7,Color.BLACK,101);
 		f_reversedGame = new RankGameLink(f_gameOne, f_gameTwo);
 		given(GameReverseModel.getInstance().getElement(anyLong())).willReturn(f_reversedGame);
-		f_variable = new CreateVariables();
+		f_variable = new CreateVariables(new String[] {});
 	}
 
 	@After

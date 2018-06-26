@@ -1,0 +1,5 @@
+eclipse.preferences.version=1
+extraProperties=sonar.exclusions\=**/tiff/common/ui/**,**/au/com/bytecode/**\r\nsonar.java.source\=1.8
+projectKey=com.airsltd\:app.rankDump
+serverUrl=http\://localhost\:9000
+version=2

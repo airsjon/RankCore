@@ -360,19 +360,6 @@ public class ConvertTest extends ConnectionSetup {
 	}
 	
 	@Test
-	public void testSwitchExists() {
-		// given
-		// when
-		assertFalse(Convert.switchExists(new String[] {}, "--incremental", "-i"));
-		assertTrue(Convert.switchExists(new String[] {"--incremental"}, "--incremental", "-i"));
-		assertTrue(Convert.switchExists(new String[] {"-i"}, "--incremental", "-i"));
-		assertFalse(Convert.switchExists(new String[] {"a", "few", "other", "args"}, "--incremental", "-i"));
-		assertTrue(Convert.switchExists(new String[] {"a", "b", "--incremental"}, "--incremental", "-i"));
-		assertTrue(Convert.switchExists(new String[] {"-i", "c", "d"}, "--incremental", "-i"));
-		// then
-	}
-	
-	@Test
 	public void testStoreGameLinks() throws SQLException {
 		// given
 		GameReverseModel l_model = GameReverseModel.getInstance();

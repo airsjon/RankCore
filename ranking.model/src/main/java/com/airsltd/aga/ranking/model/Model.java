@@ -21,24 +21,30 @@ public class Model extends AirsJavaDatabaseApp {
 	private static final Log LOGGER = LogFactory.getLog(Model.class);
 	private Engine f_engine;
 
+	public Model(String[] p_args) {
+		super(p_args);
+	}
+
 	/**
 	 * 
 	 * @param p_args
 	 * @throws ParseException 
 	 */
 	public static void main(String[] p_args) throws ParseException {
-		Model l_model = new Model();
-		Date l_runDate = getArgDate(p_args, "--runDate=", "-d");
-		int l_gameSpan = 6;
-		try {
-			l_gameSpan = Integer.parseInt(getArgData(p_args, "--span=", "-s"));
-		} catch (NumberFormatException nfe) {};
-		l_model.loadEngine(new Engine(l_runDate,l_gameSpan));
-		ISqlConnection l_connection = RankConnection.getInstance();
-		l_model.initializeDatabase(l_connection);
-		loadModels();
-		l_model.runEngine();
-		l_model.dumpStastics(System.out);
+		Model l_model = new Model(p_args);
+		if (!l_model.globalCheck()) {
+			Date l_runDate = l_model.getArgDate(p_args, "--runDate=", "-d");
+			int l_gameSpan = 6;
+			try {
+				l_gameSpan = Integer.parseInt(l_model.getArgData(p_args, "--span=", "-s"));
+			} catch (NumberFormatException nfe) {};
+			l_model.loadEngine(new Engine(l_runDate,l_gameSpan));
+			ISqlConnection l_connection = RankConnection.getInstance();
+			l_model.initializeDatabase(l_connection);
+			loadModels();
+			l_model.runEngine();
+			l_model.dumpStastics(System.out);
+		}
 	}
 
 	private void loadEngine(Engine p_engine) {

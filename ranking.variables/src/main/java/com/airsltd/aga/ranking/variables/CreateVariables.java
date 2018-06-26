@@ -56,12 +56,16 @@ public class CreateVariables extends AirsJavaDatabaseApp implements Runnable {
 	private static boolean f_incremental;
 	private Counter<VariableCounters> f_counter = new Counter<VariableCounters>(VariableCounters.class);
 	
+	public CreateVariables(String[] p_args) {
+		super(p_args);
+	}
+
 	/**
 	 * @param args
 	 */
 	public static void main(String[] p_args) {
-		setIncremental(switchExists(p_args, "--incremental", "-i"));
-		CreateVariables l_variables = new CreateVariables();
+		CreateVariables l_variables = new CreateVariables(p_args);
+		setIncremental(l_variables.switchExists(p_args, "--incremental", "-i"));
 		ISqlConnection l_connection = RankConnection.getInstance();
 		l_variables.initializeDatabase(l_connection);
 		l_variables.loadModels();

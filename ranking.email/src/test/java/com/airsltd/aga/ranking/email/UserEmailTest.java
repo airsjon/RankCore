@@ -30,7 +30,7 @@ public class UserEmailTest {
 
 	@Before
 	public void setUp() throws Exception {
-		f_userEmail = new UserEmail();
+		f_userEmail = new UserEmail(new String[] {});
 		f_userEmail.setWorkDir("src/test/resources/");
 	}
 

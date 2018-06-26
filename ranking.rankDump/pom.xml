@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.airsltd</groupId>
+	<artifactId>app.rankDump</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>app.rankDump</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.airsltd.aga</groupId>
+			<artifactId>ranking.core</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.airsltd.osgi</groupId>
+			<artifactId>airscore</artifactId>
+			<version>1.0.10-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${airsltd.junit}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>${airsltd.mockito}</version>
+		</dependency>
+	</dependencies>
+	<parent>
+		<groupId>com.airsltd.osgi</groupId>
+		<artifactId>maven.source</artifactId>
+		<version>0.0.4-SNAPSHOT</version>
+		<relativePath>../com.airsltd.osgi.maven.source/pom.xml</relativePath>
+	</parent>
+</project>

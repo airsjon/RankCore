@@ -67,9 +67,9 @@ public class UserEmail extends AirsJavaDatabaseApp {
 
 	public static void main(String[] p_args) {
 		int l_retVal = 0;
-		UserEmail l_app = new UserEmail();
+		UserEmail l_app = new UserEmail(p_args);
 		try {
-			if (switchExists(p_args, "-switch", "-s")) {
+			if (l_app.switchExists(p_args, "-switch", "-s")) {
 				l_app.setupPassword();
 			} else {
 				l_app.loadUser();
@@ -170,8 +170,8 @@ public class UserEmail extends AirsJavaDatabaseApp {
 		f_statement = p_statement;
 	}
 
-	public UserEmail() {
-		super();
+	public UserEmail(String[] p_args) {
+		super(p_args);
 		f_properties = System.getProperties();
 		f_properties.setProperty("mail.smtp.host", "email-smtp.us-east-1.amazonaws.com");
 		f_session = Session.getDefaultInstance(f_properties);
