@@ -14,6 +14,41 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${airsltd.java.source}</source>
+					<target>${airsltd.java.target}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>com.airsltd.aga.ranking.dump.CertificateList</mainClass>
+						</manifest>
+					</archive>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<finalName>AgaRankingDump</finalName>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id> <!-- this is used for inheritance merges -->
+						<phase>package</phase> <!-- bind to the packaging phase -->
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 
 	<dependencies>
 		<dependency>
@@ -44,4 +79,37 @@
 		<version>0.0.4-SNAPSHOT</version>
 		<relativePath>../com.airsltd.osgi.maven.source/pom.xml</relativePath>
 	</parent>
+	<profiles>
+		<profile>
+			<id>remote</id>
+			<build>
+				<plugins>
+					<!-- Upload the repo to the server -->
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>wagon-maven-plugin</artifactId>
+						<version>${airsltd.wagon.maven}</version>
+						<executions>
+							<execution>
+								<id>upload-update</id>
+								<phase>install</phase>
+								<goals>
+									<goal>upload</goal>
+								</goals>
+								<configuration>
+									<fromDir>${project.build.directory}</fromDir>
+									<includes>AgaRankingDump-jar-with-dependencies.jar</includes>
+									<toDir>/usr/home/airsrepo/internal/jars</toDir>
+									<toFile>AgaRankingModel.jar</toFile>
+									<url>sftp://www.airsltd.com:3047/</url>
+									<serverId>www.airsltd.com</serverId>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 </project>

@@ -1,4 +1,4 @@
-package com.airsltd.app.rankDump;
+package com.airsltd.aga.ranking.dump;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
