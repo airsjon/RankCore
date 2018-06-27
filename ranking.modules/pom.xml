@@ -17,11 +17,19 @@
   </properties>
   <modules>
   	<module>../ranking.convert</module>
-  	<module>../ranking.core</module>
   	<module>../ranking.email</module>
   	<module>../ranking.gameState</module>
   	<module>../ranking.model</module>
   	<module>../ranking.rankDump</module>
   	<module>../ranking.variables</module>
   </modules>
+  <profiles>
+    <profile>
+      <id>fullBuild</id>
+      <modules>
+        <module>../ranking.core</module>
+      </modules>
+    </profile>
+  </profiles>
+  
 </project>
