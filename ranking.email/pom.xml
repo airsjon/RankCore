@@ -24,7 +24,7 @@
 					<descriptorRefs>
 						<descriptorRef>jar-with-dependencies</descriptorRef>
 					</descriptorRefs>
-					<finalName>AGARankingEmail</finalName>
+					<finalName>AgaRankingEmail</finalName>
 				</configuration>
 				<executions>
 					<execution>
