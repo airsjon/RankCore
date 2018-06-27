@@ -4,6 +4,7 @@
     <groupId>com.airsltd.osgi</groupId>
     <artifactId>maven.source</artifactId>
     <version>0.0.4-SNAPSHOT</version>
+    <relativePath>../com.airsltd.osgi.maven.source/pom.xml</relativePath>
   </parent>
   <groupId>com.airsltd.aga</groupId>
   <artifactId>ranking.modules</artifactId>
@@ -11,6 +12,9 @@
   <packaging>pom</packaging>
   <name>RankingModules</name>
   <description>Build the ranking modules</description>
+  <properties>
+    <sonar.skip>false</sonar.skip>
+  </properties>
   <modules>
   	<module>../ranking.convert</module>
   	<module>../ranking.core</module>
