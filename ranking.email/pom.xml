@@ -24,7 +24,7 @@
 					<descriptorRefs>
 						<descriptorRef>jar-with-dependencies</descriptorRef>
 					</descriptorRefs>
-					<finalName>AirsProductRegistration</finalName>
+					<finalName>AGARankingEmail</finalName>
 				</configuration>
 				<executions>
 					<execution>
@@ -107,9 +107,9 @@
 								</goals>
 								<configuration>
 									<fromDir>${project.build.directory}</fromDir>
-									<includes>AirsProductRegistration-jar-with-dependencies.jar</includes>
+									<includes>AGARankingEmail-jar-with-dependencies.jar</includes>
 									<toDir>/usr/home/airsrepo/internal/jars</toDir>
-									<toFile>AirsProductRegistration.jar</toFile>
+									<toFile>AGARankingEmail.jar</toFile>
 									<url>sftp://www.airsltd.com:3047/</url>
 									<serverId>www.airsltd.com</serverId>
 								</configuration>
