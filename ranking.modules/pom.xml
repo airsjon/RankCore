@@ -17,6 +17,7 @@
 		<sonar.skip>false</sonar.skip>
 	</properties>
 	<modules>
+		<module>../ranking.core</module>
 		<module>../ranking.convert</module>
 		<module>../ranking.email</module>
 		<module>../ranking.gameState</module>
@@ -27,6 +28,7 @@
 	<build>
 		<plugins>
 			<plugin>
+				<!--  ignore assembly -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>3.1.0</version>
@@ -37,12 +39,6 @@
 		</plugins>
 	</build>
 	<profiles>
-		<profile>
-			<id>fullBuild</id>
-			<modules>
-				<module>../ranking.core</module>
-			</modules>
-		</profile>
 		<profile>
 			<id>remote</id>
 			<build>
