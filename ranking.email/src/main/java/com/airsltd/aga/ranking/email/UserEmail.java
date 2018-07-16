@@ -183,7 +183,7 @@ public class UserEmail extends AirsJavaDatabaseApp {
 		MimeMessage message = new MimeMessage(f_session);
 		try {
 			// update student data
-			f_statement.setInt(1, p_cert.getPlayerId());
+			f_statement.setInt(1, p_cert.getPinPlayer());
 			f_statement.setInt(2, 1);
 			f_statement.execute();
 			// email verification email

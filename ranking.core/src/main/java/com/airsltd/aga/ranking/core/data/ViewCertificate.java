@@ -16,7 +16,7 @@ import com.airsltd.core.data.annotations.AirsPersistentField;
 @AirsPersistentClass(table="viewGenerated",keys=0x3)
 public class ViewCertificate extends PersistedData {
 
-	@AirsPersistentField(fieldName="Pin_Player")
+	@AirsPersistentField(fieldName="Player_ID")
 	private int	f_pinPlayer;
 	@AirsPersistentField(fieldName="Rank")
 	private int f_rank;
@@ -28,8 +28,6 @@ public class ViewCertificate extends PersistedData {
 	private	String f_email2;
 	@AirsPersistentField(fieldName="RunDate")
 	private Date f_runDate;
-	@AirsPersistentField(fieldName="Player_ID")
-	private int f_playerId;
 	/**
 	 * @return the pinPlayer
 	 */
@@ -103,18 +101,6 @@ public class ViewCertificate extends PersistedData {
 		f_runDate = p_runDate;
 	}
 	
-	/**
-	 * @return the playerId
-	 */
-	public int getPlayerId() {
-		return f_playerId;
-	}
-	/**
-	 * @param p_playerId the playerId to set
-	 */
-	public void setPlayerId(int p_playerId) {
-		f_playerId = p_playerId;
-	}
 	/**
 	 * Generate a nice looking rank string.
 	 * 

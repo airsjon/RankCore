@@ -20,7 +20,6 @@ public class ViewCertificateTest {
 		f_certificate.setEmail2("email2@null.org");
 		f_certificate.setFullName("Family Name, Given Name");
 		f_certificate.setPinPlayer(90003);
-		f_certificate.setPlayerId(321321);
 		f_certificate.setRank(5);
 		f_certificate.setRunDate(new Date(new GregorianCalendar(2017,8,10).getTimeInMillis()));
 	}

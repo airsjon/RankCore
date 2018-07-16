@@ -22,8 +22,8 @@ public class ViewCertificateModel extends ListModel<ViewCertificate,Object> {
 	 */
 	@Override
 	protected String getSelectionQuery(Object p_qualifier) {
-		return "select Pin_Player, full_name, email, email2, Rank, RunDate, Player_ID "
-				+ "from liverankobtained natural join playerData where accepted=1 and generated=0;";
+		return "select Player_ID, full_name, email, email2, Rank, RunDate "
+				+ "from liverankobtained natural join playerData where accepted=1 and `generated`=0;";
 	}
 
 	
