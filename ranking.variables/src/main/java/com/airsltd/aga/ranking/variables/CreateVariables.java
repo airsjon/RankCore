@@ -5,6 +5,7 @@ package com.airsltd.aga.ranking.variables;
 
 import java.sql.Date;
 import java.util.ArrayDeque;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
@@ -14,6 +15,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.airsltd.aga.ranking.core.data.RankGame;
 import com.airsltd.aga.ranking.core.data.RankGameExt;
+import com.airsltd.aga.ranking.core.data.RankGameOrder;
 import com.airsltd.aga.ranking.core.data.RankPlayer;
 import com.airsltd.aga.ranking.core.data.RankRating;
 import com.airsltd.aga.ranking.core.model.GameExtModel;
@@ -102,6 +104,8 @@ public class CreateVariables extends AirsJavaDatabaseApp implements Runnable {
 	 */
 	protected void processRating(List<RankGame> p_content, RankPlayer p_player) {
 		List<RankRating> l_contentAsList = RatingModel.getInstance().getContentAsList(p_player);
+		l_contentAsList.sort((x, y) -> x.getDate().compareTo(y.getDate()));
+		p_content.sort(new RankGameOrder());
 		Deque<RankRating> l_ratingIterator = l_contentAsList.isEmpty()?null:new ArrayDeque<RankRating>(l_contentAsList);
 		// store the current rating/sigma tuple in l_current
 		Tuple<Double, Double> l_current = new Tuple<Double, Double>();

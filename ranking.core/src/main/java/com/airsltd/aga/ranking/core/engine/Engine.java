@@ -12,6 +12,7 @@ import org.apache.commons.logging.LogFactory;
 import com.airsltd.aga.ranking.core.data.GameState;
 import com.airsltd.aga.ranking.core.data.LiveRankObtained;
 import com.airsltd.aga.ranking.core.data.RankGame;
+import com.airsltd.aga.ranking.core.data.RankGameOrder;
 import com.airsltd.aga.ranking.core.data.RankPlayer;
 import com.airsltd.aga.ranking.core.function.special.MovingAverageValue;
 import com.airsltd.aga.ranking.core.function.special.ProbabilityAs;
@@ -71,7 +72,10 @@ public class Engine {
 		LOGGER.info("Generating Ranks");
 		LiveRankObtainedModel.getInstance().loadModel(null);
 		LiveRankObtainedModel.getInstance().setCompleteLoad(true);
-		processRanks();
+		GameExtModel.getInstance().doBlockUpdate(() -> {
+			GameModel.getInstance().doBlockUpdate(() -> {
+				processRanks();
+			}); });
 		storeCertificates();
 	}
 
@@ -80,6 +84,7 @@ public class Engine {
 			f_players++;
 			final List<RankGame> l_games = AirsCollections.findAll(new IncrementalGameSelector(),
 					GameModel.getInstance().getContentAsList(l_player));
+			l_games.sort(new RankGameOrder());
 			f_games = l_games.size();
 			// load in previous ranks
 			int l_toRank = rankLimit(l_player);
@@ -89,17 +94,12 @@ public class Engine {
 			/*
 			 * Process each game to determine rank the player qualified and store it.
 			 */
-			GameExtModel.getInstance().doBlockUpdate(() -> {
-				processRankValues(l_player, l_games);
-			});
+			processRankValues(l_player, l_games);
 			
-			final int l_finalRankValue = l_toRank;
 			/*
 			 * Go through and record all ranks that were obtained.
 			 */
-			GameModel.getInstance().doBlockUpdate(() -> {
-				processRank(l_finalRankValue, l_player, l_games);
-			});
+			processRank(l_toRank, l_player, l_games);
 		}
 	}
 
@@ -161,11 +161,9 @@ public class Engine {
 	protected void processRank(int p_currentRank, RankPlayer p_player, List<RankGame> p_games) {
 		int l_currentRank = p_currentRank;
 		int l_gameIndex = 1;
+		f_gamesAverage.clear();
 		for (final RankGame l_game : p_games) {
 			int l_maxRank = 7;
-			if (l_maxRank > 7) {
-				l_maxRank = 7;
-			}
 			processGame(l_game);
 			for (int l_rank = l_maxRank; l_rank > l_currentRank; l_rank--) {
 				if (isRankMade(l_rank)) {
@@ -253,16 +251,12 @@ public class Engine {
 
 	protected void storeCertificates() {
 		LOGGER.info("Storing certificates");
-		final LiveRankObtainedModel l_rankData = LiveRankObtainedModel.getInstance();
-		l_rankData.startBlock();
-		try {
+		LiveRankObtainedModel.getInstance().doBlockUpdate(() -> {
+			LiveRankObtainedModel l_model = LiveRankObtainedModel.getInstance();
 			for (final LiveRankObtained l_obtained : f_liveRanks) {
-				l_rankData.addContent(l_obtained);
+				l_model.addContent(l_obtained);
 			}
-			l_rankData.endBlock();
-		} finally {
-			l_rankData.cancelBlock();
-		}
+		});
 	}
 
 	/**
