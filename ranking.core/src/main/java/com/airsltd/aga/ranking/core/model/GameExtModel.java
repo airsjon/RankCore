@@ -83,7 +83,6 @@ public class GameExtModel extends LinkedModel<RankGame, RankGameExt> {
 		if (l_retVal == null) {
 			l_retVal = new RankGameExt(p_element);
 			f_modified.put(p_element, l_retVal);
-			updateContent(p_element, l_retVal);
 		}
 		return l_retVal;
 	}
@@ -105,5 +104,18 @@ public class GameExtModel extends LinkedModel<RankGame, RankGameExt> {
 		f_modified.clear();
 		super.cancelBlock();
 	}
+
+	/* (non-Javadoc)
+	 * @see com.airsltd.core.model.BlockModel#endBlock()
+	 */
+	@Override
+	public boolean endBlock(boolean p_useDeleteClause) {
+		f_modified.forEach((l_old, l_new) -> {
+			updateContent(l_old, l_new);
+		});
+		return super.endBlock(p_useDeleteClause);
+	}
+	
+	
 
 }

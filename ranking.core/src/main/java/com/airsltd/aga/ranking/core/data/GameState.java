@@ -30,7 +30,7 @@ public enum GameState implements IPrettyObject {
 	 */
 	REJECTED("Rejected"),
 	/**
-	 * The game will is to be used for rank
+	 * The game is to be used for rank
 	 * determination
 	 */
 	VALID("Valid"), 

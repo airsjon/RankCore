@@ -89,7 +89,9 @@ public class Engine {
 			/*
 			 * Process each game to determine rank the player qualified and store it.
 			 */
-			processRankValues(l_player, l_games);
+			GameExtModel.getInstance().doBlockUpdate(() -> {
+				processRankValues(l_player, l_games);
+			});
 			
 			final int l_finalRankValue = l_toRank;
 			/*
@@ -134,7 +136,10 @@ public class Engine {
 				LOGGER.info("@Game: "+l_gameIndex);
 			}
 			gameSetup(l_game);
-			storeRank(p_player, l_game, calculateRank());
+			int l_calculateRank = calculateRank();
+			if (f_gamesAverage.full()) {
+				storeRank(p_player, l_game, l_calculateRank);
+			}
 			l_gameIndex++;
 		}
 		
