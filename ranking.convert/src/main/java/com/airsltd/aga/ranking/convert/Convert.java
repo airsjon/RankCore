@@ -135,6 +135,7 @@ public class Convert extends AirsJavaDatabaseApp {
 		try (Connection l_connection = CoreInterface.getSystem().getConnection();
 			 Statement l_statement = l_connection.createStatement()) {
 			l_statement.execute("delete from `usgo_agarank`.`games`");
+			l_statement.execute("delete from `usgo_agarank`.`gamesext`");
 			l_statement.execute("delete from `usgo_agarank`.`gamelink`");
 			l_statement.execute("delete from `usgo_agarank`.`ratings`");
 			l_statement.execute("delete from `usgo_agarank`.`tournament`");
