@@ -49,12 +49,16 @@ public class RankGameLinkTest {
 		l_game1.setId(15);
 		RankGame l_game2 = new RankGame(2803,0,8,Color.WHITE,1502);
 		l_game2.setId(14);
-		GameModel.getInstance().addModelData(Arrays.asList(l_game1, l_game2));
 		PlayerModel.setInstance(mock(PlayerModel.class));
 		RankPlayer m_player = new RankPlayer(2802);
 		given(PlayerModel.getInstance().getElement(2802l)).willReturn(m_player);
 		RankPlayer m_player2 = new RankPlayer(2803);
 		given(PlayerModel.getInstance().getElement(2803l)).willReturn(m_player2);
+		l_game1.setPlayer(m_player);
+		l_game2.setPlayer(m_player2);
+		l_game1.setAgaGameId(1523);
+		l_game2.setAgaGameId(1523);
+		GameModel.getInstance().addModelData(Arrays.asList(l_game1, l_game2));
 		RankGameLink l_link = new RankGameLink();
 		// when
 		l_link.fromStringCsv(l_stringIn);

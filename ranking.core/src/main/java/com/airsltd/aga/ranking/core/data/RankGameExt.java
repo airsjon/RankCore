@@ -37,6 +37,16 @@ public class RankGameExt extends PersistedData implements ISegment<RankGame> {
 	private Double f_trailingProbability;
 	@AirsPersistentField
 	private Integer f_calculatedRating;
+	/**
+	 * The number of wins in the last six games.
+	 */
+	@AirsPersistentField
+	private int f_wins;
+	/**
+	 * The second highest rating of the games won.
+	 */
+	@AirsPersistentField
+	private long f_secondRating;
 
 	public RankGameExt() {
 		super();
@@ -252,5 +262,34 @@ public class RankGameExt extends PersistedData implements ISegment<RankGame> {
 	public void setCalculatedRating(Integer p_calculatedRating) {
 		f_calculatedRating = p_calculatedRating;
 	}
+
+	/**
+	 * @return the wins
+	 */
+	public int getWins() {
+		return f_wins;
+	}
+
+	/**
+	 * @param p_wins the wins to set
+	 */
+	public void setWins(int p_wins) {
+		f_wins = p_wins;
+	}
+
+	/**
+	 * @return the secondRating
+	 */
+	public long getSecondRating() {
+		return f_secondRating;
+	}
+
+	/**
+	 * @param p_secondRating the secondRating to set
+	 */
+	public void setSecondRating(long p_secondRating) {
+		f_secondRating = p_secondRating;
+	}
+
 
 }

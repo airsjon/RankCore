@@ -43,6 +43,8 @@ public class Engine {
 	private static Boolean s_tracing = false;
 	private static final Log LOGGER = LogFactory.getLog(Engine.class);
 
+	private static final Double HUNDREDDOUBLE = 100.0d;
+
 	private int f_players;
 
 	private int f_ranks;
@@ -196,10 +198,15 @@ public class Engine {
 
 	protected boolean gamesWon() {
 		int l_testValue = 0;
+		RankGame l_lastGame = null;
 		for (RankGame l_game : f_gamesAverage) {
+			l_lastGame = l_game;
 			if (l_game.getResult() == GameResult.PLAYERWON) {
 				l_testValue++;
 			}
+		}
+		if (l_lastGame !=null) {
+			GameExtModel.getInstance().getElement(l_lastGame).setWins(l_testValue);
 		}
 		return l_testValue > 3;
 	}
@@ -208,15 +215,31 @@ public class Engine {
 		int l_testValue = 0;
 		boolean l_retVal = false;
 		float l_rankCheck = p_rank + .5f;
+		Double l_highest = -20d;
+		Double l_second = -20d;
+		RankGame l_lastGame = null;
 		for (RankGame l_game : f_gamesAverage) {
+			l_lastGame = l_game;
+			Double l_trailingQuality = GameExtModel.getInstance().getElement(l_game).getTrailingQuality();
 			if (l_game.getResult() == GameResult.PLAYERWON &&
-				GameExtModel.getInstance().getElement(l_game).getTrailingQuality() > l_rankCheck) {
+				l_trailingQuality > l_rankCheck) {
+				if (l_trailingQuality > l_second) {
+					if (l_trailingQuality > l_highest) {
+						l_second = l_highest;
+						l_highest = l_trailingQuality;
+					} else {
+						l_second = l_trailingQuality;
+					}
+				}
 				l_testValue++;
 				if (l_testValue == 2) {
 					l_retVal = true;
 					break;
 				}
 			}
+		}
+		if (l_lastGame != null) {
+			GameExtModel.getInstance().getElement(l_lastGame).setSecondRating(new Double(l_second*HUNDREDDOUBLE).longValue());
 		}
 		return l_retVal;
 	}

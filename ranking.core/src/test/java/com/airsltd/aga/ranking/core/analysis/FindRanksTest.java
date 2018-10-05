@@ -56,7 +56,6 @@ public class FindRanksTest {
 	public void tearDown() throws Exception {
 	}
 
-	@Test
 	public void testEvaluate() {
 		// given
 		// when

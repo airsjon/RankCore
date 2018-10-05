@@ -231,18 +231,18 @@ public class EngineTest {
 	@Test
 	public void testStoreCertificates() throws Exception {
 		//given
-		LiveRankObtained l_lro1 = mock(LiveRankObtained.class);
-		LiveRankObtained l_lro2 = mock(LiveRankObtained.class);
+		RankPlayer l_player = new RankPlayer(2802);
+		@SuppressWarnings("deprecation")
+		Date l_date = new Date(2018,03,01);
+		LiveRankObtained l_lro1 = new LiveRankObtained(5, l_player, l_date, 32);
+		LiveRankObtained l_lro2 = new LiveRankObtained(6, l_player, l_date, 44);
 		List<LiveRankObtained> l_ranks = Arrays.asList(l_lro1, l_lro2);
 		f_engine.setLiveRanks(l_ranks);
-		given (l_lro1.tableName()).willReturn("liveRank");
-		given (l_lro2.tableName()).willReturn("liveRank");
 		
 		// when
 		f_engine.storeCertificates();
 		// then
-		verify(LiveRankObtainedModel.getInstance()).addContent(l_lro1);
-		verify(LiveRankObtainedModel.getInstance()).addContent(l_lro2);
+		verify(LiveRankObtainedModel.getInstance()).doBlockUpdate(any(Runnable.class));
 	}
 	
 	@Test

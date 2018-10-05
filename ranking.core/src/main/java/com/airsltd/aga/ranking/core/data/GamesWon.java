@@ -21,7 +21,7 @@ public enum GamesWon {
 	/**
 	 * Add to the Set all the games that have been won.
 	 * <br>
-	 * Games are orders with wins first and losses last.
+	 * Games are ordered with wins first and losses last.
 	 * 
 	 * @param p_gamesWon  total number of games won
 	 * @return a set of the games won
