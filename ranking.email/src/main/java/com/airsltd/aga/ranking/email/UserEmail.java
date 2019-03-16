@@ -57,9 +57,9 @@ public class UserEmail extends AirsJavaDatabaseApp {
 
 	private String f_host = "email-smtp.us-east-1.amazonaws.com";
 
-	private String f_user;
+	private String f_user = "";
 
-	private String f_password;
+	private String f_password = "";
 
 	private PreparedStatement f_statement;
 

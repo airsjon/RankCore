@@ -221,8 +221,7 @@ public class Engine {
 		for (RankGame l_game : f_gamesAverage) {
 			l_lastGame = l_game;
 			Double l_trailingQuality = GameExtModel.getInstance().getElement(l_game).getTrailingQuality();
-			if (l_game.getResult() == GameResult.PLAYERWON &&
-				l_trailingQuality > l_rankCheck) {
+			if (l_game.getResult() == GameResult.PLAYERWON) {
 				if (l_trailingQuality > l_second) {
 					if (l_trailingQuality > l_highest) {
 						l_second = l_highest;
@@ -231,10 +230,12 @@ public class Engine {
 						l_second = l_trailingQuality;
 					}
 				}
-				l_testValue++;
-				if (l_testValue == 2) {
-					l_retVal = true;
-					break;
+				if (l_trailingQuality > l_rankCheck) {
+					l_testValue++;
+					if (l_testValue == 2) {
+						l_retVal = true;
+						break;
+					}
 				}
 			}
 		}

@@ -60,6 +60,7 @@ public class UserEmailTest {
 		given(m_cert.prettyRank()).willReturn("4 Dan");
 		given(m_cert.getEmail()).willReturn("jon@airsltd.com");
 		given(m_cert.getFullName()).willReturn("Jon Boley");
+		given(m_cert.fixName()).willReturn("Jon Boley");
 		given(m_cert.getRunDate()).willReturn(new Date(new GregorianCalendar(2015,10,4).getTime().getTime()));
 		f_userEmail.setStatement(m_statement);
 		f_userEmail.setEmailString("Email to: <fullname> for <rank> on <runDate>");
