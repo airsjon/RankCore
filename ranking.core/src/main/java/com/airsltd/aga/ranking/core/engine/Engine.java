@@ -12,6 +12,7 @@ import org.apache.commons.logging.LogFactory;
 import com.airsltd.aga.ranking.core.data.GameState;
 import com.airsltd.aga.ranking.core.data.LiveRankObtained;
 import com.airsltd.aga.ranking.core.data.RankGame;
+import com.airsltd.aga.ranking.core.data.RankGameExt;
 import com.airsltd.aga.ranking.core.data.RankGameOrder;
 import com.airsltd.aga.ranking.core.data.RankPlayer;
 import com.airsltd.aga.ranking.core.function.special.MovingAverageValue;
@@ -198,15 +199,30 @@ public class Engine {
 
 	protected boolean gamesWon() {
 		int l_testValue = 0;
+		Double l_highest = -20d;
+		Double l_second = -20d;
 		RankGame l_lastGame = null;
 		for (RankGame l_game : f_gamesAverage) {
 			l_lastGame = l_game;
 			if (l_game.getResult() == GameResult.PLAYERWON) {
 				l_testValue++;
+				Double l_trailingQuality = GameExtModel.getInstance().getElement(l_game).getTrailingQuality();
+				if (l_game.getResult() == GameResult.PLAYERWON) {
+					if (l_trailingQuality > l_second) {
+						if (l_trailingQuality > l_highest) {
+							l_second = l_highest;
+							l_highest = l_trailingQuality;
+						} else {
+							l_second = l_trailingQuality;
+						}
+					}
+				}
 			}
 		}
 		if (l_lastGame !=null) {
-			GameExtModel.getInstance().getElement(l_lastGame).setWins(l_testValue);
+			RankGameExt l_gameExt = GameExtModel.getInstance().getElement(l_lastGame);
+			l_gameExt.setWins(l_testValue);
+			l_gameExt.setSecondRating(new Double(l_second*HUNDREDDOUBLE).longValue());
 		}
 		return l_testValue > 3;
 	}
@@ -215,21 +231,9 @@ public class Engine {
 		int l_testValue = 0;
 		boolean l_retVal = false;
 		float l_rankCheck = p_rank + .5f;
-		Double l_highest = -20d;
-		Double l_second = -20d;
-		RankGame l_lastGame = null;
 		for (RankGame l_game : f_gamesAverage) {
-			l_lastGame = l_game;
-			Double l_trailingQuality = GameExtModel.getInstance().getElement(l_game).getTrailingQuality();
 			if (l_game.getResult() == GameResult.PLAYERWON) {
-				if (l_trailingQuality > l_second) {
-					if (l_trailingQuality > l_highest) {
-						l_second = l_highest;
-						l_highest = l_trailingQuality;
-					} else {
-						l_second = l_trailingQuality;
-					}
-				}
+				Double l_trailingQuality = GameExtModel.getInstance().getElement(l_game).getTrailingQuality();
 				if (l_trailingQuality > l_rankCheck) {
 					l_testValue++;
 					if (l_testValue == 2) {
@@ -238,9 +242,6 @@ public class Engine {
 					}
 				}
 			}
-		}
-		if (l_lastGame != null) {
-			GameExtModel.getInstance().getElement(l_lastGame).setSecondRating(new Double(l_second*HUNDREDDOUBLE).longValue());
 		}
 		return l_retVal;
 	}

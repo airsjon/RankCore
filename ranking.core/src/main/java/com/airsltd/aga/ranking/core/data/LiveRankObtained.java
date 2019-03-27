@@ -3,6 +3,7 @@
  */
 package com.airsltd.aga.ranking.core.data;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.Set;
 
@@ -28,7 +29,12 @@ import com.airsltd.core.model.ISegment;
  *
  */
 @AirsPersistentClass(table = "liverankobtained", keys = 3, style = FieldStyle.CAPITALIZED)
-public class LiveRankObtained extends PersistedData implements ISegment<RankPlayer> {
+public class LiveRankObtained extends PersistedData implements ISegment<RankPlayer>, Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -924489414535129109L;
 
 	private static final Log LOGGER = LogFactory.getLog(LiveRankObtained.class);
 

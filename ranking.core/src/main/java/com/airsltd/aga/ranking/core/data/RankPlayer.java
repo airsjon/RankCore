@@ -3,6 +3,7 @@
  */
 package com.airsltd.aga.ranking.core.data;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 import com.airsltd.aga.ranking.core.model.PlayerModel;
@@ -16,8 +17,12 @@ import com.airsltd.core.data.annotations.FieldStyle;
  *
  */
 @AirsPersistentClass(table = "players", keys = 1, style = FieldStyle.CAPITALIZED)
-public class RankPlayer extends AbstractPersistedIdData {
+public class RankPlayer extends AbstractPersistedIdData implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2234015339024929543L;
 	/**
 	 * Internal field to store number of games played.
 	 */
