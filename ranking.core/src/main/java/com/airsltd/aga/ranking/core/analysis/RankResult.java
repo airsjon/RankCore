@@ -5,7 +5,6 @@ package com.airsltd.aga.ranking.core.analysis;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 
 /**
  * Object that saves when a rank was obtained during an analysis

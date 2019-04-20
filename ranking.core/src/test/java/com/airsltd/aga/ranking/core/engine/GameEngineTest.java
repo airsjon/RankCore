@@ -6,6 +6,7 @@ import static org.mockito.BDDMockito.*;
 import java.time.LocalDate;
 import java.sql.Date;
 import java.util.Arrays;
+import java.util.HashSet;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -50,7 +51,7 @@ public class GameEngineTest {
 		l_game2.setState(GameState.PROCESSED);
 		RankGame l_game3 = new RankGame(30, 0, 7, Color.WHITE, 7);
 		l_game3.setState(GameState.REANALYZE);
-		given(GameModel.getInstance().getContentAsList()).willReturn(Arrays.asList(l_game1, l_game2, l_game3));
+		given(GameModel.getInstance().getContentAsList()).willReturn(new HashSet<>(Arrays.asList(l_game1, l_game2, l_game3)));
 		// when
 		// then
 		f_standardGame.process();

@@ -6,7 +6,7 @@ package com.airsltd.aga.ranking.core.engine;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -50,7 +50,7 @@ public class GameIterator implements AutoCloseable, Iterator<RankGame> {
 
 	protected void setupDeque(boolean p_reanalyze) {
 		GameModel.getInstance().startBlock();
-		final List<RankGame> l_currentGames = GameModel.getInstance().getContentAsList();
+		final Set<RankGame> l_currentGames = GameModel.getInstance().getContentAsList();
 		f_games = new ArrayDeque<RankGame>();
 		for (final RankGame l_game : l_currentGames) {
 			if (p_reanalyze ? l_game.getState() == GameState.REANALYZE : l_game.getState().isRedo()) {

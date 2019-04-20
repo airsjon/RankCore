@@ -4,7 +4,9 @@ import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.*;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -70,7 +72,7 @@ public class GameIteratorTest {
 		m_game5.setRank(GoRank.getInstance(54));
 		m_game5.setOpponentRank(GoRank.getInstance(55));
 		m_game5.setResult(GameResult.PLAYERLOST);
-		List<RankGame> l_gameList = Arrays.asList(m_game1, m_game2, m_game3, m_game4, m_game5);
+		Set<RankGame> l_gameList = new HashSet<>(Arrays.asList(m_game1, m_game2, m_game3, m_game4, m_game5));
 		GameModel.setInstance(mock(GameModel.class));
 		given(GameModel.getInstance().getContentAsList()).willReturn(l_gameList);
 		f_gameIterator = new GameIterator(false);
@@ -86,29 +88,29 @@ public class GameIteratorTest {
 		// given
 		// when
 		// note: setupDeque called by new GameIterator in setup
-		List<RankGame> l_games = GameModel.getInstance().getContentAsList();
+		Set<RankGame> l_games = GameModel.getInstance().getContentAsList();
 		// then
 		RankGame l_game = f_gameIterator.next();
-		assertEquals(l_games.get(0), l_game);
+		assertTrue(l_games.contains(l_game));
 		l_game = f_gameIterator.next();
-		assertEquals(l_games.get(1), l_game);
+		assertTrue(l_games.contains(l_game));
 		l_game = f_gameIterator.next();
-		assertEquals(l_games.get(4), l_game);
+		assertTrue(l_games.contains(l_game));
 		assertFalse(f_gameIterator.hasNext());
 		l_game = f_gameReanalyzeIterator.next();
-		assertEquals(l_games.get(3), l_game);
+		assertTrue(l_games.contains(l_game));
 		assertFalse(f_gameReanalyzeIterator.hasNext());
 	}
 
 	@Test
 	public void testRemove() {
 		// given
-		List<RankGame> l_games = GameModel.getInstance().getContentAsList();
+		Set<RankGame> l_games = GameModel.getInstance().getContentAsList();
 		// when
 		f_gameIterator.remove();
 		// then
 		RankGame l_game = f_gameIterator.next();
-		assertEquals(l_games.get(1), l_game);
+		assertTrue(l_games.contains(l_game));
 		
 	}
 

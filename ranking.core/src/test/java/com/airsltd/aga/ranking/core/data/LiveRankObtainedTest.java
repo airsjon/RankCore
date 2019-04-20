@@ -6,6 +6,7 @@ import static org.mockito.BDDMockito.*;
 import java.sql.Date;
 import java.util.Arrays;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.Map;
 
 import org.junit.After;
@@ -77,7 +78,7 @@ public class LiveRankObtainedTest {
 		l_map.put(l_game4, l_gameExt4);
 		l_map.put(l_game5, l_gameExt5);
 		l_map.put(l_game6, l_gameExt6);
-		GameModel.getInstance().loadSegment(l_player, Arrays.asList(l_game1, l_game2, l_game3, l_game4, l_game5, l_game6));
+		GameModel.getInstance().loadSegment(l_player, new HashSet<>(Arrays.asList(l_game1, l_game2, l_game3, l_game4, l_game5, l_game6)));
 		l_game1.setResult(GameResult.PLAYERWON);
 		l_game2.setResult(GameResult.PLAYERWON);
 		l_game3.setResult(GameResult.PLAYERWON);
