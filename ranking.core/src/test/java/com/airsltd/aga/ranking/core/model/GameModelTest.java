@@ -76,16 +76,17 @@ public class GameModelTest {
 	@Test
 	public void testGetContentAsList() throws Exception {
 		// given
-		RankPlayer l_player = new RankPlayer();
-		RankPlayer l_player2 = new RankPlayer();
-		RankPlayer l_player3 = new RankPlayer();
+		RankPlayer l_player = new RankPlayer(5);
+		RankPlayer l_player2 = new RankPlayer(6);
+		RankPlayer l_player3 = new RankPlayer(7);
 		RankPlayer[] l_players = new RankPlayer[] { l_player, l_player2, l_player3 };
 		List<RankGame> l_games = new ArrayList<RankGame>();
 		int l_gameIndex = 24;
+		int l_agaId = 512;
 		for (int index = 0; index != 2; index++) {
 			for (int index2 = index+1; index2 != 3; index2++ ) {
-				RankGame l_game1 = new RankGame(l_gameIndex++, 0, 7, Color.WHITE, 5);
-				RankGame l_game2 = new RankGame(l_gameIndex++, 0, 7, Color.BLACK, 6);
+				RankGame l_game1 = new RankGame(l_gameIndex++, 0, 7, Color.WHITE, l_agaId);
+				RankGame l_game2 = new RankGame(l_gameIndex++, 0, 7, Color.BLACK, l_agaId++);
 				l_game1.setPlayer(l_players[index]);
 				l_game2.setOpponent(l_players[index]);
 				l_game2.setPlayer(l_players[index2]);

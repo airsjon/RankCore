@@ -50,6 +50,7 @@ public class CreateVariablesTest extends ConnectionSetupTest {
 	private RankGameLink f_reversedGame;
 	private RankGame f_gameTwo;
 	private RankGame f_gameOne;
+	private int f_playerId = 3000;
 
 	@Before
 	public void setUp() throws Exception {
@@ -64,9 +65,17 @@ public class CreateVariablesTest extends ConnectionSetupTest {
 		GameReverseModel.setInstance(mock(GameReverseModel.class));
 		f_gameOne = new RankGame(32,0,7,Color.WHITE,101);
 		f_gameTwo = new RankGame(33,0,7,Color.BLACK,101);
+		f_gameOne.setPlayer(getAPlayer());
+		f_gameOne.setOpponent(getAPlayer());
+		f_gameTwo.setPlayer(getAPlayer());
+		f_gameTwo.setPlayer(getAPlayer());
 		f_reversedGame = new RankGameLink(f_gameOne, f_gameTwo);
 		given(GameReverseModel.getInstance().getElement(anyLong())).willReturn(f_reversedGame);
 		f_variable = new CreateVariables(new String[] {});
+	}
+
+	private RankPlayer getAPlayer() {
+		return new RankPlayer(f_playerId++);
 	}
 
 	@After
@@ -109,8 +118,17 @@ public class CreateVariablesTest extends ConnectionSetupTest {
 		RankGame l_game1 = new RankGame(5, 0, 7, Color.BLACK, 1);
 		RankGame l_game2 = new RankGame(6, 0, 7, Color.WHITE, 2);
 		RankGame l_game3 = new RankGame(7, 0, 7, Color.WHITE, 3);
+		RankPlayer l_player = getAPlayer();
+		l_game1.setDate(new Date(new GregorianCalendar(2017,02,15).getTime().getTime()));
+		l_game2.setDate(new Date(new GregorianCalendar(2017,02,17).getTime().getTime()));
+		l_game3.setDate(new Date(new GregorianCalendar(2017,02,19).getTime().getTime()));
+		l_game1.setPlayer(l_player);
+		l_game2.setPlayer(l_player);
+		l_game3.setPlayer(l_player);
+		l_game1.setOpponent(getAPlayer());
+		l_game2.setOpponent(getAPlayer());
+		l_game3.setOpponent(getAPlayer());
 		List<RankGame> l_games = Arrays.asList(l_game1 , l_game2, l_game3);
-		RankPlayer l_player = mock(RankPlayer.class);
 		l_game1.setRank(GoRank.getInstance(55));
 		l_game2.setRank(GoRank.getInstance(56));
 		l_game3.setRank(GoRank.getInstance(57));
@@ -223,7 +241,16 @@ public class CreateVariablesTest extends ConnectionSetupTest {
 		RankGame l_game2 = new RankGame(6, 0, 7, Color.BLACK, 2);
 		RankGame l_game3 = new RankGame(7, 0, 7, Color.BLACK, 3);
 		List<RankGame> l_games = Arrays.asList(l_game1 , l_game2, l_game3);
-		RankPlayer l_player = mock(RankPlayer.class);
+		RankPlayer l_player = getAPlayer();
+		l_game1.setDate(new Date(new GregorianCalendar(2017,02,15).getTime().getTime()));
+		l_game2.setDate(new Date(new GregorianCalendar(2017,02,17).getTime().getTime()));
+		l_game3.setDate(new Date(new GregorianCalendar(2017,02,19).getTime().getTime()));
+		l_game1.setPlayer(l_player);
+		l_game2.setPlayer(l_player);
+		l_game3.setPlayer(l_player);
+		l_game1.setOpponent(getAPlayer());
+		l_game2.setOpponent(getAPlayer());
+		l_game3.setOpponent(getAPlayer());
 		l_game1.setRank(GoRank.getInstance(55));
 		l_game2.setRank(GoRank.getInstance(56));
 		l_game3.setRank(GoRank.getInstance(57));
@@ -432,31 +459,30 @@ public class CreateVariablesTest extends ConnectionSetupTest {
 	
 	@Test
 	public void testCheckRankGame() {
-		// given
-		// when
-		f_variable.check(f_gameOne);
-		// then
-		assertNull(extGame(f_gameOne).getProbability());
-		// when
-		extGame(f_gameOne).setPlayersRating(3.2d);
-		f_variable.check(f_gameOne);
-		// then
-		assertNull(extGame(f_gameOne).getProbability());
-		// when
-		extGame(f_gameOne).setOpponentRating(3.5d);
-		f_variable.check(f_gameOne);
-		// then
-		assertEquals(.37f, extGame(f_gameOne).getProbability(), .001f);
+		try {
+			// given
+			GameExtModel.getInstance().startBlock();
+			// when
+			f_variable.check(f_gameOne);
+			// then
+			assertNull(extGame(f_gameOne).getProbability());
+			// when
+			extGame(f_gameOne).setPlayersRating(3.2d);
+			f_variable.check(f_gameOne);
+			// then
+			assertNull(extGame(f_gameOne).getProbability());
+			// when
+			extGame(f_gameOne).setOpponentRating(3.5d);
+			f_variable.check(f_gameOne);
+			// then
+			assertEquals(.37f, extGame(f_gameOne).getProbability(), .001f);
+		} finally {
+			GameExtModel.getInstance().cancelBlock();
+		}
 	}
 
 	private RankGameExt extGame(RankGame p_game) {
-		Map<RankGame, RankGameExt> l_map = GameExtModel.getInstance().getData();
-		RankGameExt l_retVal = l_map.get(p_game);
-		if (l_retVal == null) {
-			l_retVal = new RankGameExt(p_game);
-			l_map.put(p_game, l_retVal);
-		}
-		return l_retVal;
+		return GameExtModel.getInstance().getElement(p_game);
 	}
 
 	@Test

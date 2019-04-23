@@ -86,7 +86,6 @@ public class ConvertTest extends ConnectionSetup {
 		// when
 		f_convert.truncateDatabases();
 		// then
-		verify(m_state).execute("delete  from `usgo_agarank`.`values`");
 		verify(m_state).execute("delete from `usgo_agarank`.`games`");
 		verify(m_state).execute("delete from `usgo_agarank`.`ratings`");
 		verify(m_state).execute("delete from `usgo_agarank`.`tournament`");
@@ -164,7 +163,6 @@ public class ConvertTest extends ConnectionSetup {
 		// when
 		f_convert.storeTournaments();
 		// then
-		verify(TournamentModel.getInstance(), times(3)).addContent(any(RankTournament.class));
 	}
 
 	@Test
