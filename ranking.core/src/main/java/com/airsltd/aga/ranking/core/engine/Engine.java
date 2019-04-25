@@ -118,7 +118,7 @@ public class Engine {
 		int l_toRank = ENDRANK;
 		List<LiveRankObtained> l_obtained = LiveRankObtainedModel.getInstance().getContentAsList(l_player);
 		if (!l_obtained.isEmpty()) {
-			l_toRank = Integer.max(ENDRANK, l_obtained.get(l_obtained.size()-1).getRank()+1);
+			l_toRank = Integer.max(ENDRANK, l_obtained.get(l_obtained.size()-1).getRank());
 		}
 		return l_toRank;
 	}
@@ -166,15 +166,16 @@ public class Engine {
 		int l_gameIndex = 1;
 		f_gamesAverage.clear();
 		for (final RankGame l_game : p_games) {
-			int l_maxRank = 7;
 			processGame(l_game);
-			for (int l_rank = l_maxRank; l_rank > l_currentRank; l_rank--) {
-				if (isRankMade(l_rank)) {
-					// rank obtained so record it
-					incrementalRankObtained(l_rank, p_player, l_gameIndex);
-					l_currentRank = l_rank;
-					break;
-				}
+			Integer l_rank = rankMade(l_currentRank);
+			if (l_game.getPlayer().getPin_Player()==14208) {
+				RankGameExt l_gameExt = GameExtModel.getInstance().getElement(l_game);
+				LOGGER.info("Game: "+l_game.getAgaGameId()+" "+l_gameExt.getCalculatedRating() + " "+l_gameExt.getWins()+" "+l_gameExt.getSecondRating());
+				LOGGER.info("Current Rank: "+l_currentRank+" new: "+l_rank);
+			}
+			if (l_rank != null) {
+				incrementalRankObtained(l_rank, p_player, l_gameIndex);
+				l_currentRank = l_rank;
 			}
 			markProcessedGame();
 			l_gameIndex++;
@@ -182,19 +183,17 @@ public class Engine {
 	}
 
 	/**
-	 * Determine if p_player in game p_game has obtained rank p_rank.
+	 * Determine the rank a p_player made in game p_game.
 	 * <br>
-	 * Look up the rank obtained in game p_game and compare this rank to p_rank.
+	 * Look up the rank obtained in game p_game.
 	 * Make sure that the player has also won 4+ games and 2+ wins at rank or higher.
 	 * 
-	 * @param p_player
-	 * @param p_game
-	 * @param p_rank  int, not null - the Rank being checked (continuous rank)
+	 * @param p_rank  int, not null - players current rank
 	 * @return
 	 */
-	protected boolean isRankMade(int p_rank) {
-		return f_gamesAverage.full() && gamesWon() && gamesSufficient(p_rank) &&
-				rankCheck(p_rank);
+	protected Integer rankMade(int p_rank) {
+		return (f_gamesAverage.full() && gamesWon())? 
+				rankCheck(p_rank):null;
 	}
 
 	protected boolean gamesWon() {
@@ -246,8 +245,16 @@ public class Engine {
 		return l_retVal;
 	}
 	
-	protected boolean rankCheck(int p_rank) {
-		return ProbabilityAs.getInstance().evaluate(f_gamesAverage) > (p_rank * 100 + 50);
+	protected Integer rankCheck(int p_rank) {
+		Integer l_retVal = null;
+		int l_gameValue = ProbabilityAs.getInstance().evaluate(f_gamesAverage);
+		for (int l_rank = 7; l_rank != p_rank; l_rank--) {
+			if (gamesSufficient(l_rank) && l_gameValue >= (l_rank * 100 + 50)) {
+				l_retVal = l_rank;
+				break;
+			}
+		}
+		return l_retVal;
 	}
 
 	private void processGame(RankGame p_game) {
