@@ -39,6 +39,10 @@ import com.airsltd.core.collections.AirsCollections;
  */
 public class Engine {
 
+	private static final int RANKOFFSETINTEGER = 0;
+
+	private static final float RANKOFFSET = .0f;
+
 	private static final int ENDRANK = -9;
 
 	private static Boolean s_tracing = false;
@@ -168,11 +172,6 @@ public class Engine {
 		for (final RankGame l_game : p_games) {
 			processGame(l_game);
 			Integer l_rank = rankMade(l_currentRank);
-			if (l_game.getPlayer().getPin_Player()==14208) {
-				RankGameExt l_gameExt = GameExtModel.getInstance().getElement(l_game);
-				LOGGER.info("Game: "+l_game.getAgaGameId()+" "+l_gameExt.getCalculatedRating() + " "+l_gameExt.getWins()+" "+l_gameExt.getSecondRating());
-				LOGGER.info("Current Rank: "+l_currentRank+" new: "+l_rank);
-			}
 			if (l_rank != null) {
 				incrementalRankObtained(l_rank, p_player, l_gameIndex);
 				l_currentRank = l_rank;
@@ -196,6 +195,11 @@ public class Engine {
 				rankCheck(p_rank):null;
 	}
 
+	/**
+	 * Calculate the number of games won and store the second highest game won.
+	 * 
+	 * @return true if more than 3 games won.
+	 */
 	protected boolean gamesWon() {
 		int l_testValue = 0;
 		Double l_highest = -20d;
@@ -226,10 +230,16 @@ public class Engine {
 		return l_testValue > 3;
 	}
 	
+	/**
+	 * Determine if enough games were won at p_rank + RANKOFFSET
+	 * 
+	 * @param p_rank  not null, rank to test if wins were sufficient
+	 * @return true if 2 games were won at p_rank + RANKOFFSET
+	 */
 	protected boolean gamesSufficient(int p_rank) {
 		int l_testValue = 0;
 		boolean l_retVal = false;
-		float l_rankCheck = p_rank + .5f;
+		float l_rankCheck = p_rank + RANKOFFSET;
 		for (RankGame l_game : f_gamesAverage) {
 			if (l_game.getResult() == GameResult.PLAYERWON) {
 				Double l_trailingQuality = GameExtModel.getInstance().getElement(l_game).getTrailingQuality();
@@ -245,11 +255,17 @@ public class Engine {
 		return l_retVal;
 	}
 	
+	/**
+	 * Find the best rank that the current game warrants.
+	 * 
+	 * @param p_rank  int, the current rank held by the player.
+	 * @return an Integer of the best rank possible, null if no higher rank has been achieved.
+	 */
 	protected Integer rankCheck(int p_rank) {
 		Integer l_retVal = null;
 		int l_gameValue = ProbabilityAs.getInstance().evaluate(f_gamesAverage);
 		for (int l_rank = 7; l_rank != p_rank; l_rank--) {
-			if (gamesSufficient(l_rank) && l_gameValue >= (l_rank * 100 + 50)) {
+			if (gamesSufficient(l_rank) && l_gameValue >= (l_rank * 100 + RANKOFFSETINTEGER)) {
 				l_retVal = l_rank;
 				break;
 			}
@@ -257,12 +273,14 @@ public class Engine {
 		return l_retVal;
 	}
 
+	/**
+	 * Place p_game onto the MovingAverageValue f_gamesAverage.
+	 * 
+	 * @param p_game  not null, the RankGame to be added to the MovingAverageValue.
+	 * @see MovingAverageValue
+	 */
 	private void processGame(RankGame p_game) {
 		f_gamesAverage.addValue(p_game);
-	}
-
-	protected int rankNormalized(int p_type) {
-		return Math.floorDiv(p_type-50,100);
 	}
 
 	protected void markProcessedGame() {

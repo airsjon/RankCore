@@ -100,19 +100,6 @@ public class EngineTest {
 	}
 
 	@Test
-	public void testRankNormalized() {
-		// given
-		// when
-		// then
-		assertEquals(0,f_engine.rankNormalized(149));
-		assertEquals(1,f_engine.rankNormalized(150));
-		assertEquals(-1, f_engine.rankNormalized(49));
-		assertEquals(0, f_engine.rankNormalized(50));
-		assertEquals(-2, f_engine.rankNormalized(-51));
-		assertEquals(-1, f_engine.rankNormalized(-50));
-	}
-
-	@Test
 	public void testIncrementalRankObtained() throws Exception {
 		//given
 		f_engine.setRunDate(new Date(new GregorianCalendar(2015, 0, 15).getTimeInMillis()));
